@@ -14,6 +14,7 @@ class Main:
     def __init__(self):
         colorama.init()
         self.image_paths: list[None | str] = []
+        self.converted_image_paths : list[None | str] = []
         self.run()
 
     def run(self):
@@ -54,6 +55,7 @@ class Main:
                 ico_path = OUTPUT_ICO_DIR / f"{image_name}.ico"
                 image.save(ico_path, format='ICO', sizes=[(32, 32)])
                 convert_count += 1
+                self.converted_image_paths.append(image_path)
                 print(colorama.Fore.GREEN + f'Converted {image_path} into .ico' + colorama.Style.RESET_ALL)
             except Exception as e:
                 error_count += 1
@@ -68,7 +70,7 @@ class Main:
 
     def move_old_image(self):
         try:
-            for image_file in self.image_paths:
+            for image_file in self.converted_image_paths:
                 image_path = INPUT_IMAGE_DIR / image_file
                 shutil.move(image_path, OUTPUT_IMAGE_DIR)
         except Exception as e:
